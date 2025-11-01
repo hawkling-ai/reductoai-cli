@@ -17,7 +17,6 @@ Run directly from GitHub using `uvx` (no installation required):
 # Parse a document
 uvx --from git+https://github.com/hawkling-ai/reductoai-cli reducto parse document.pdf
 ```
-```
 
 ## Configuration
 
