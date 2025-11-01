@@ -11,15 +11,12 @@ A command-line interface wrapper for the [Reducto API](https://docs.reducto.ai/)
 
 ## Installation
 
+Run directly from GitHub using `uvx` (no installation required):
+
 ```bash
-# Clone the repository
-cd reductoai-cli
-
-# Install with uv
-uv sync
-
-# Run with uv
-uv run reducto
+# Parse a document
+uvx --from git+https://github.com/hawkling-ai/reductoai-cli reducto parse document.pdf
+```
 ```
 
 ## Configuration
@@ -31,7 +28,7 @@ Set your Reducto API key in one of two ways:
 export REDUCTO_API_KEY="your-api-key-here"
 ```
 
-**Option 2: .env file** (recommended)
+**Option 2: .env file**
 ```bash
 # Edit .env and add your API key
 REDUCTO_API_KEY=your-api-key-here
@@ -66,27 +63,11 @@ reducto parse document.pdf \
 reducto parse document.pdf \
   --settings-return-images figure \
   --settings-return-images table
-
-# Parse with OCR data and specific format
-reducto parse document.pdf \
-  --settings-return-ocr-data \
-  --formatting-table-output-format html
 ```
 
 ## Output
 
-All commands output JSON to stdout, making it easy to pipe to other tools:
-
-```bash
-# Parse and save to file
-reducto parse document.pdf > result.json
-
-# Parse and extract job_id with jq
-reducto parse document.pdf | jq -r '.job_id'
-
-# Upload and get file_id
-reducto upload document.pdf | jq -r '.file_id'
-```
+All commands output a JSON file.
 
 ## License
 
