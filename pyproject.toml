@@ -1,0 +1,46 @@
+[project]
+name = "reducto-cli"
+version = "0.1.0"
+description = "A CLI wrapper for the Reducto API"
+readme = "README.md"
+authors = [
+    { name = "Victor Yap", email = "vicyap24@gmail.com" }
+]
+requires-python = ">=3.8"
+dependencies = [
+    "reductoai",
+    "typer",
+    "rich",
+    "python-dotenv",
+]
+
+[dependency-groups]
+dev = [
+    "ruff",
+    "pytest>=8.0.0",
+    "pytest-xdist>=3.0.0",
+    "pytest-mock>=3.0.0",
+    "pytest-cov>=5.0.0",
+]
+
+[project.scripts]
+reducto = "reducto_cli.main:app"
+
+[build-system]
+requires = ["uv_build>=0.9.4,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py38"
+lint.select = ["I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "-v",
+    "--tb=short",
+    "-n", "auto",
+    "--cov=src",
+    "--cov-report=term-missing",
+]
