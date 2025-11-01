@@ -14,6 +14,33 @@ from ..utils import is_local_file, output_json, output_error, poll_job, save_jso
 app = typer.Typer()
 
 
+def validate_return_images(values: Optional[List[str]]) -> Optional[List[str]]:
+    """
+    Validate that return_images values are only 'figure' or 'table'.
+
+    Args:
+        values: List of return_images values
+
+    Returns:
+        The validated values
+
+    Raises:
+        typer.BadParameter: If any value is not 'figure' or 'table'
+    """
+    if values is None:
+        return None
+
+    valid_values = {'figure', 'table'}
+    for value in values:
+        if value not in valid_values:
+            raise typer.BadParameter(
+                f"Invalid value '{value}'. "
+                f"Only 'figure' and 'table' are allowed for --settings-return-images.\n"
+                f"Example: --settings-return-images figure --settings-return-images table"
+            )
+    return values
+
+
 def upload_file(client, file_path: Path):
     """
     Upload a file to Reducto.
@@ -163,7 +190,8 @@ def parse(
     settings_return_images: Optional[List[str]] = typer.Option(
         None,
         "--settings-return-images",
-        help="Return images for block types: figure, table",
+        help="Return images for block types (allowed values: 'figure', 'table'). Can be specified multiple times.",
+        callback=validate_return_images,
     ),
     settings_return_ocr_data: Optional[bool] = typer.Option(
         None,
@@ -181,9 +209,9 @@ def parse(
         help="OCR system: standard (best multilingual) or legacy",
     ),
     settings_persist_results: Optional[bool] = typer.Option(
-        None,
+        False,
         "--settings-persist-results/--no-settings-persist-results",
-        help="Persist results indefinitely",
+        help="Persist results indefinitely (default: False)",
     ),
     settings_force_url_result: Optional[bool] = typer.Option(
         None,
